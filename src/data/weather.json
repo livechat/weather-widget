@@ -1,0 +1,35 @@
+{
+  "coord": { "lon": 16.8652, "lat": 51.1913 },
+  "weather": [
+    {
+      "id": 802,
+      "main": "Clouds",
+      "description": "scattered clouds",
+      "icon": "03d"
+    }
+  ],
+  "base": "stations",
+  "main": {
+    "temp": 3.75,
+    "feels_like": -0.2,
+    "temp_min": 2.78,
+    "temp_max": 5,
+    "pressure": 1018,
+    "humidity": 70
+  },
+  "visibility": 10000,
+  "wind": { "speed": 2.57, "deg": 340 },
+  "clouds": { "all": 40 },
+  "dt": 1616148332,
+  "sys": {
+    "type": 1,
+    "id": 1715,
+    "country": "PL",
+    "sunrise": 1616129847,
+    "sunset": 1616173389
+  },
+  "timezone": 3600,
+  "id": 3102456,
+  "name": "Wilkszyn",
+  "cod": 200
+}

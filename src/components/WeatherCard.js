@@ -1,70 +1,69 @@
-import React from 'react'
+import React from "react";
+import { format } from "date-fns";
 /** @jsx jsx */
-import { css, jsx } from '@emotion/core'
-import colors from '@livechat/design-system-colors'
-import { Button } from '@livechat/design-system'
+import { css, jsx } from "@emotion/core";
+import { Button } from "@livechat/design-system";
+import {
+  wrapperCss,
+  titleWrapperCss,
+  titleCss,
+  bodyWrapperCss,
+  footerWrapperCss,
+} from "./WeatherCard.style";
 
-const wrapperCss = css`
-  background-color: #fff;
-  margin-top: 8px;
-  font-size: 15px;
-  line-height: 16px;
-  border-width: 1px;
-  border-style: solid;
-  border-color: ${colors.gray200};
-  border-image: initial;
-  border-radius: 8px;
-  padding: 18px 18px 10px;
-`
-
-const titleWrapperCss = css`
-  display: flex;
-  align-items: center;
-  margin-bottom: 14px;
-`
-
-const titleCss = css`
-  font-size: 18px;
-  line-height: 24px;
-  color: ${colors.gray700};
-  font-weight: 600;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  width: 100%;
-  overflow: hidden;
-`
-
-const bodyWrapperCss = css`
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  line-height: 18px;
-`
-
-const footerWrapperCss = css`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 12px;
-  margin-bottom: 8px;
-`
-
-const Card = () => {
+const WeatherCard = ({ weather, profile }) => {
   return (
     <div css={wrapperCss}>
       <div css={titleWrapperCss}>
-        <div css={titleCss}>Title</div>
+        <div css={titleCss}>Customer Weather</div>
       </div>
 
-      <div css={bodyWrapperCss}>body</div>
+      <div css={bodyWrapperCss}>
+        <div
+          css={css`
+            font-size: 22px;
+            margin-bottom: 4px;
+          `}
+        >
+          {profile.geolocation.city}
+        </div>
+
+        <div
+          css={css`
+            font-size: 12px;
+            text-transform: capitalize;
+          `}
+        >
+          {weather.weather[0].description}
+        </div>
+
+        <div>
+          <img
+            alt="Weather icon"
+            src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`}
+          />
+        </div>
+
+        <div
+          css={css`
+            font-size: 36px;
+            margin-bottom: 10px;
+          `}
+        >
+          {parseInt(weather.main.temp, 10)}&deg;
+        </div>
+
+        <div>
+          <span>H: {parseInt(weather.main.temp_max, 10)}&deg;</span>{" "}
+          <span>L: {parseInt(weather.main.temp_min, 10)}&deg;</span>
+        </div>
+      </div>
 
       <div css={footerWrapperCss}>
-        <Button>Action</Button>
+        <Button kind="primary">Action</Button>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Card
+export default WeatherCard;

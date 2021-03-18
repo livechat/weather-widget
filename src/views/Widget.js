@@ -1,22 +1,83 @@
-import React from 'react'
+import React, { useState, useRef, useEffect } from "react";
 /** @jsx jsx */
-import { css, jsx } from '@emotion/core'
-import WeatherCard from '../components/WeatherCard'
+import { css, jsx } from "@emotion/core";
+import { createDetailsWidget } from "@livechat/agent-app-sdk";
+import WeatherCard from "../components/WeatherCard";
+import weatherData from "../data/weather.json";
 
 const wrapperCss = css`
   padding: 12px 8px 100px;
-`
+`;
+
+const getWeather = async (city = "Wroclaw") => {
+  try {
+    // const { data } = await axios.get(
+    //   "https://api.openweathermap.org/data/2.5/weather",
+    //   {
+    //     params: {
+    //       q: city,
+    //       appid: "TOKEN",
+    //       units: "metric",
+    //     },
+    //   }
+    // );
+
+    const data = await Promise.resolve(weatherData);
+
+    return data;
+  } catch (error) {
+    console.log("error", error);
+  }
+};
 
 const Widget = () => {
   // profile
-  // widget
-  // api clients
+  const [profile, setProfile] = useState(null);
+  const [currentWeather, setCurrentWeather] = useState(null);
+  const widget = useRef(null);
+
+  const getWidget = async () => {
+    try {
+      widget.current = await createDetailsWidget();
+
+      widget.current.on("customer_profile", async (profile) => {
+        setProfile(profile);
+      });
+    } catch (error) {
+      console.error(error);
+      setProfile(null);
+    }
+  };
+
+  useEffect(() => {
+    getWidget();
+
+    return () => widget.current?.off("customer_profile");
+  }, []);
+
+  useEffect(() => {
+    const fetchWeather = async () => {
+      try {
+        const weather = await getWeather(profile?.geolocation?.city);
+
+        setCurrentWeather(weather);
+      } catch (error) {
+        setCurrentWeather(null);
+      }
+    };
+
+    if (profile) {
+      fetchWeather();
+    }
+  }, [profile]);
 
   return (
     <div css={wrapperCss}>
-      <WeatherCard />
+      {currentWeather && (
+        <WeatherCard weather={currentWeather} profile={profile} />
+      )}
     </div>
-  )
-}
+  );
+};
 
-export default Widget
+export default Widget;
