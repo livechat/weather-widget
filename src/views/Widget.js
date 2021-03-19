@@ -4,7 +4,6 @@ import axios from "axios";
 import { css, jsx } from "@emotion/core";
 import { createDetailsWidget } from "@livechat/agent-app-sdk";
 import WeatherCard from "../components/WeatherCard";
-import weatherData from "../data/weather.json";
 
 const wrapperCss = css`
   padding: 12px 8px 100px;
@@ -17,7 +16,7 @@ const getWeather = async (city = "Wroclaw") => {
       {
         params: {
           q: city,
-          appid: "token",
+          appid: process.env.REACT_APP_WEATHER_API,
           units: "metric",
         },
       }
