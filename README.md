@@ -21,3 +21,10 @@ You will also see any lint errors in the console.
 ### `yarn build`
 
 Builds the app for production to the `build` folder.<br />
+
+### Coding challenge:
+1. Display information about the customer's weather using the [Customer Details widget](https://developers.livechat.com/docs/extending-agent-app/agent-app-sdk/#creating-a-customer-details-widget). 
+2. Use the [thread tagging endpoint](https://developers.livechat.com/docs/messaging/agent-chat-api/#thread-tags) to tag the chat (for example, `weather-widget`) when an agent sends the rich message with weather info.
+
+Raise a PR with your solution.
+Good luck!
