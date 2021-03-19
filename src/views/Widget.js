@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import axios from "axios";
 /** @jsx jsx */
 import { css, jsx } from "@emotion/core";
 import { createDetailsWidget } from "@livechat/agent-app-sdk";
@@ -11,18 +12,18 @@ const wrapperCss = css`
 
 const getWeather = async (city = "Wroclaw") => {
   try {
-    // const { data } = await axios.get(
-    //   "https://api.openweathermap.org/data/2.5/weather",
-    //   {
-    //     params: {
-    //       q: city,
-    //       appid: "TOKEN",
-    //       units: "metric",
-    //     },
-    //   }
-    // );
+    const { data } = await axios.get(
+      "https://api.openweathermap.org/data/2.5/weather",
+      {
+        params: {
+          q: city,
+          appid: "token",
+          units: "metric",
+        },
+      }
+    );
 
-    const data = await Promise.resolve(weatherData);
+    // const data = await Promise.resolve(weatherData);
 
     return data;
   } catch (error) {
@@ -30,7 +31,7 @@ const getWeather = async (city = "Wroclaw") => {
   }
 };
 
-const Widget = () => {
+const Widget = ({ authData }) => {
   // profile
   const [profile, setProfile] = useState(null);
   const [currentWeather, setCurrentWeather] = useState(null);
@@ -74,7 +75,11 @@ const Widget = () => {
   return (
     <div css={wrapperCss}>
       {currentWeather && (
-        <WeatherCard weather={currentWeather} profile={profile} />
+        <WeatherCard
+          weather={currentWeather}
+          profile={profile}
+          authData={authData}
+        />
       )}
     </div>
   );
