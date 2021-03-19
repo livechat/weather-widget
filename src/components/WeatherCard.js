@@ -1,10 +1,9 @@
-import React from "react";
+import React from 'react';
 import axios from "axios";
 import { format } from "date-fns";
 /** @jsx jsx */
 import { css, jsx } from "@emotion/core";
 import { Button } from "@livechat/design-system";
-import forecastData from "../data/forecast.json";
 import {
   wrapperCss,
   titleWrapperCss,
@@ -37,6 +36,26 @@ const sendMessage = async (chatId, elements, token) => {
   }
 };
 
+const tagChat = async (chatId, threadId, token) => {
+  try {
+    await axios.post(
+      "https://api.livechatinc.com/v3.2/agent/action/tag_thread",
+      {
+        chat_id: chatId,
+        thread_id: threadId, 
+        tag: "weather-widget"
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+  } catch (error) {
+    console.log("error", error);
+  }
+};
+
 const getForecast = async (city) => {
   try {
     const { data } = await axios.get(
@@ -44,7 +63,7 @@ const getForecast = async (city) => {
       {
         params: {
           q: city,
-          appid: "token",
+          appid: process.env.REACT_APP_WEATHER_API,
           units: "metric",
           cnt: 5,
         },
@@ -97,6 +116,7 @@ const WeatherCard = ({ weather, profile, authData }) => {
         authData.access_token,
         profile.chat.chat_id
       );
+      await tagChat(profile.chat.chat_id, profile.chat.thread_id, authData.access_token);
     } catch (error) {
       console.log("error", error);
     }
